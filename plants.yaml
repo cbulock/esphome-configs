@@ -1,0 +1,25 @@
+esphome:
+  name: plants
+  platform: ESP32
+  board: esp32doit-devkit-v1
+
+wifi:
+  ssid: "BulockHA"
+  password: !secret ha_wifi_password
+
+  fast_connect: true
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Plants Fallback Hotspot"
+    password: !secret local_ap_password
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
