@@ -2,36 +2,19 @@ esphome:
   name: plants
   platform: ESP32
   board: esp32doit-devkit-v1
+  comment: Plant Data Collector
 
-wifi:
-  ssid: "BulockHA"
-  password: !secret ha_wifi_password
-
-  fast_connect: true
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Plants Fallback Hotspot"
-    password: !secret local_ap_password
-
-captive_portal:
-
-# Enable logging
-logger:
-
-# Enable Home Assistant API
-api:
-
-ota:
+<<: !include common.yaml
 
 esp32_ble_tracker:
+  scan_parameters:
+    active: false
 
 sensor:
   - platform: xiaomi_hhccjcy01
     mac_address: 'C4:7C:8D:66:39:BD'
     temperature:
       name: "Foyer Temperature"
-      unit_of_measurement: "°F"
     moisture:
       name: "Foyer Plant Moisture"
     illuminance:
@@ -45,7 +28,6 @@ sensor:
     mac_address: 'C4:7C:8D:62:D4:B0'
     temperature:
       name: "Loft Temperature"
-      unit_of_measurement: "°F"
     moisture:
       name: "Loft Plant Moisture"
     illuminance:
@@ -56,10 +38,9 @@ sensor:
       name: "Loft Plant Sensor Battery Level"
 
   - platform: xiaomi_hhccjcy01
-    mac_address: 'C4:7C:8D:62:D4:B0'
+    mac_address: 'C4:7C:8D:62:D4:CF'
     temperature:
       name: "Office Temperature"
-      unit_of_measurement: "°F"
     moisture:
       name: "Aloe Plant Moisture"
     illuminance:

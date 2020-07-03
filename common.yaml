@@ -1,0 +1,20 @@
+wifi:
+  ssid: "BulockHA"
+  password: !secret ha_wifi_password
+
+  fast_connect: true
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fallback Hotspot"
+    password: !secret local_ap_password
+
+captive_portal:
+
+logger:
+
+api:
+
+ota:
+
+web_server:
