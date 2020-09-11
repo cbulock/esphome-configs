@@ -1,0 +1,15 @@
+esphome:
+    name: hot_tub_temp
+    platform: ESP8266
+    board: nodemcuv2
+    comment: Hot Tub Temp
+  
+<<: !include common.yaml
+
+dallas:
+  - pin: D1 #GPIO5
+
+sensor:
+  - platform: dallas
+    index: 0
+    name: "Hot Tub Temp"
