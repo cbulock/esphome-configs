@@ -7,7 +7,7 @@ esphome:
 <<: !include common.yaml
 
 dallas:
-  - pin: D1 #GPIO5
+  - pin: D3 #GPIO0
 
 sensor:
   - platform: dallas
