@@ -10,4 +10,11 @@ i2c:
 
 sensor:
   - platform: bh1750
-    name: "Illuminance"
+    name: "Outdoor Light Level"
+  - platform: dht
+    pin: D4
+    model: AM2302
+    temperature:
+      name: "Master Bathroom Temp"
+    humidity:
+      name: "Master Bathroom Humidity"
