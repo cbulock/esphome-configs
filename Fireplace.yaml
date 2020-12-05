@@ -1,0 +1,30 @@
+esphome:
+  name: fireplace
+  platform: ESP8266
+  board: nodemcuv2
+  comment: Fireplace
+
+<<: !include common.yaml
+
+script:
+  - id: auto_shutoff
+    then:
+      - delay: 4h
+      - switch.turn_off: Relay
+
+switch:
+  - platform: gpio
+    icon: mdi:fireplace 
+    name: Relay
+    id: Relay
+    pin: D1
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - script.execute: auto_shutoff
+    on_turn_off:
+      - script.stop: auto_shutoff
+
+status_led:
+  pin:
+    number: D0
+    inverted: True

@@ -9,6 +9,10 @@ wifi:
     ssid: "Fallback Hotspot"
     password: !secret local_ap_password
 
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal"
+
 captive_portal:
 
 logger:
