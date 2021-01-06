@@ -1,0 +1,29 @@
+# Sonoff Basic
+esphome:
+  name: craft_room_christmas_lights
+  platform: ESP8266
+  board: esp8285
+  comment: Craft Room Christmas Lights
+
+<<: !include common.yaml
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button"
+    on_press:
+      - switch.toggle: relay
+
+switch:
+  - platform: gpio
+    name: "Relay"
+    pin: GPIO12
+    id: relay
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: yes

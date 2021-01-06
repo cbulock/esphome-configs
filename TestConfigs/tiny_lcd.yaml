@@ -1,0 +1,40 @@
+esphome:
+  name: test_platform
+  platform: ESP8266
+  board: nodemcuv2
+  comment: Test
+
+<<: !include ../common.yaml
+
+i2c:
+  sda: D1
+  scl: D2
+
+sensor:
+  - platform: dht
+    pin: D5
+    model: AM2302
+    update_interval: 5s
+    temperature:
+      name: Temp
+      id: temp
+    humidity:
+      name: Humidity
+      id: humidity
+
+font:
+  - file: '../fonts/OpenSans-Regular.ttf'
+    id: opensans
+    size: 10
+  - file: '../fonts/DejaVuSans-Bold.ttf'
+    id: dejavu_bold
+    size: 10
+
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    lambda: |-
+      it.print(0, 0, id(dejavu_bold), "Environment Data");
+      it.printf(0, 25, id(dejavu_bold), "Temp: %.1f°C", id(temp).state);
+      it.printf(0, 50, id(dejavu_bold), "Humidity: %.1f%%", id(humidity).state);

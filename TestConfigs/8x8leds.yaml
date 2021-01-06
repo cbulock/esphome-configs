@@ -1,0 +1,35 @@
+esphome:
+  name: test_platform
+  platform: ESP8266
+  board: nodemcuv2
+  comment: Test
+
+<<: !include ../common.yaml
+
+spi:
+  clk_pin: D0
+  mosi_pin: D1
+
+sensor:
+  - platform: dht
+    pin: D5
+    model: AM2302
+    update_interval: 5s
+    temperature:
+      name: Temp
+      id: temp
+    humidity:
+      name: Humidity
+      id: humidity
+
+font:
+  - file: '../fonts/pixelmix.ttf'
+    id: pixelmix
+    size: 8
+
+display:
+  - platform: max7219digit
+    scroll_mode: STOP
+    cs_pin: D2
+    lambda: |-
+      it.print(0, 0, id(pixelmix), "HELLO WORLD!     ");
