@@ -7,10 +7,12 @@ esphome:
 <<: !include common.yaml
 
 i2c:
+  frequency: 400kHz
 
 sensor:
   - platform: bh1750
     name: "Outdoor Light Level"
+    address: 0x23
   - platform: dht
     pin: D5
     model: AM2302
