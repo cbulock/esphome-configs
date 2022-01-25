@@ -1,0 +1,18 @@
+esphome:
+    name: christmas-tree-water
+    platform: ESP8266
+    board: d1_mini
+    comment: Christmas Tree Water
+  
+<<: !include common.yaml
+
+sensor:
+  - platform: ultrasonic
+    trigger_pin: D1
+    echo_pin: D2
+    name: "Ultrasonic Sensor"
+    update_interval: 180s
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    filters:
+    - lambda: if (x > 0.12) { return 0; } else if (x < 0.02) { return 100; } else { return x * (-1000) + 120; }
