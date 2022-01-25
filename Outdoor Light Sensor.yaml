@@ -13,11 +13,3 @@ sensor:
   - platform: bh1750
     name: "Outdoor Light Level"
     address: 0x23
-  - platform: dht
-    pin: D5
-    model: AM2302
-    update_interval: 5s
-    temperature:
-      name: "Master Bathroom Temp"
-    humidity:
-      name: "Master Bathroom Humidity"
