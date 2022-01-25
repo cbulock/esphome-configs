@@ -1,0 +1,7 @@
+esphome:
+    name: humidistat
+    platform: ESP8266
+    board: d1_mini
+    comment: Humidistat
+  
+<<: !include includes/common.yaml

@@ -4,7 +4,7 @@ esphome:
   board: esp01_1m
   comment: Deck Lights
 
-<<: !include ./includes/common.yaml
+<<: !include includes/common.yaml
 
 binary_sensor:
   - platform: gpio
