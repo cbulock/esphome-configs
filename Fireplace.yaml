@@ -4,7 +4,7 @@ esphome:
   board: nodemcuv2
   comment: Fireplace
 
-<<: !include common.yaml
+<<: !include ./includes/common.yaml
 
 script:
   - id: auto_shutoff

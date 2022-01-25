@@ -4,7 +4,7 @@ esphome:
     board: nodemcuv2
     comment: Hot Tub Temp
   
-<<: !include common.yaml
+<<: !include ./includes/common.yaml
 
 dallas:
   - pin: D3 #GPIO0

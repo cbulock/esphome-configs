@@ -4,7 +4,7 @@ esphome:
   board: esp01_1m
   comment: Front Outdoor Lights
 
-<<: !include common.yaml
+<<: !include ./includes/common.yaml
 
 binary_sensor:
   - platform: gpio

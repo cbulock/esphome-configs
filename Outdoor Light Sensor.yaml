@@ -4,7 +4,7 @@ esphome:
   board: nodemcuv2
   comment: Outdoor Light Sensor
 
-<<: !include common.yaml
+<<: !include ./includes/common.yaml
 
 i2c:
   frequency: 400kHz

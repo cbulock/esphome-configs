@@ -4,7 +4,7 @@ esphome:
   board: esp32doit-devkit-v1
   comment: Plant Data Collector
 
-<<: !include common.yaml
+<<: !include ./includes/common.yaml
 
 esp32_ble_tracker:
   scan_parameters:
