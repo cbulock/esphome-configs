@@ -1,0 +1,179 @@
+esphome:
+  name: humidistat
+  comment: Humidistat
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+    
+#logger:
+#  level: VERBOSE
+
+<<: !include includes/common.yaml
+
+font:
+  - file: 'fonts/OpenSans-Regular.ttf'
+    id: opensans
+    size: 10
+  - file: 'fonts/DejaVuSans-Bold.ttf'
+    id: dejavu_bold
+    size: 10
+  - file: 'fonts/DejaVuSans-Bold.ttf'
+    id: dejavu_bold_large
+    size: 40
+    
+color:
+  - id: black
+    red: 0%
+    green: 0%
+    blue: 0%
+    white: 0%
+  - id: red
+    red: 100%
+    green: 0%
+    blue: 0%
+  - id: green
+    red: 0%
+    green: 100%
+    blue: 0%
+  - id: blue
+    red: 0%
+    green: 0%
+    blue: 100%
+
+spi:
+  clk_pin: 18
+  mosi_pin: 23
+  miso_pin: 19
+
+display:
+  - platform: ili9341
+    model: TFT 2.4
+    rotation: 90
+    led_pin: 32
+    reset_pin: 33
+    cs_pin: 13
+    dc_pin: 27
+    update_interval: 1s
+    lambda: |-
+      it.fill(id(black));
+      it.print(0, 0, id(dejavu_bold), id(red), "Environment Data");
+      it.printf(0, 25, id(opensans), "Outdoor Temp: %.1f°F", id(outdoor_temp).state);
+      it.printf(0, 50, id(dejavu_bold), "Target Humidity: %.1f%%", id(target_humidity).state);
+      
+      it.printf(15, 80, id(dejavu_bold), "Indoor Humidity");
+      it.printf(it.get_width() - 15, 80, id(dejavu_bold), TextAlign::TOP_RIGHT, "Target Humidity");
+      
+      it.printf(10, 100, id(dejavu_bold_large), "%.1f%%", id(target_humidity).state);
+      it.printf(it.get_width() - 10, 100, id(dejavu_bold_large), TextAlign::TOP_RIGHT, "%.1f%%", id(target_humidity).state);
+
+switch:
+  - platform: gpio
+    internal: true
+    icon: mdi:waves-arrow-up 
+    name: Humidistat Relay
+    id: relay
+    pin: 27
+  - platform: template
+    name: "Automatic Mode"
+    id: automatic_mode
+    optimistic: true
+    restore_state: true
+
+sensor:
+  - platform: rotary_encoder
+    internal: true
+    name: "Dial"
+    pin_a: 16 # CLK
+    pin_b: 17 # DT
+    on_clockwise:
+    - switch.turn_off: automatic_mode 
+    - number.set:
+        id: manual_target
+        value: !lambda return id(manual_target).state + 1;
+    on_anticlockwise:
+    - switch.turn_off: automatic_mode
+    - number.set:
+        id: manual_target
+        value: !lambda return id(manual_target).state - 1;
+  - platform: homeassistant
+    name: "Outdoor Temp"
+    id: outdoor_temp
+    entity_id: sensor.outdoor_temp
+
+binary_sensor:
+  - platform: gpio
+    internal: true
+    pin:
+      number: 5
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Mode Button"
+    on_press:
+    - switch.toggle: automatic_mode
+    
+number:
+  - platform: template
+    name: "Manual Target Humidity"
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+    id: manual_target
+    optimistic: true
+    min_value: 0
+    max_value: 60
+    initial_value: 40
+    restore_value: true
+    step: 1
+  - platform: template
+    internal: true
+    name: "Automatic Target Humidity"
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+    id: auto_target
+    min_value: 10
+    max_value: 45
+    step: 1
+    update_interval: 1s
+    lambda: !lambda |-
+      if (id(outdoor_temp).state < -20) {
+          return 10;
+      }
+      else if (id(outdoor_temp).state < -10) {
+          return 15;
+      }
+      else if (id(outdoor_temp).state < 0) {
+          return 20;
+      }
+      else if (id(outdoor_temp).state < 10) {
+          return 25;
+      }
+      else if (id(outdoor_temp).state < 20) {
+          return 30;
+      }
+      else if (id(outdoor_temp).state < 30) {
+          return 35;
+      }
+      else if (id(outdoor_temp).state < 40) {
+          return 40;
+      }
+      return 45;
+    set_action: 
+    - lambda: !lambda |-
+  - platform: template
+    #internal: true
+    name: "Target Humidity"
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+    id: target_humidity
+    update_interval: 1s
+    min_value: 0
+    max_value: 60
+    step: 1
+    lambda: !lambda |-
+      if (id(automatic_mode).state) {
+          return id(auto_target).state;
+      }
+      return id(manual_target).state;
+    set_action: 
+    - lambda: !lambda |-
