@@ -1,5 +1,5 @@
 esphome:
-  name: front_outdoor_lights
+  name: front-outdoor-lights
   platform: ESP8266
   board: esp01_1m
   comment: Front Outdoor Lights

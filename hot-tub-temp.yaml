@@ -1,5 +1,5 @@
 esphome:
-    name: hot_tub_temp
+    name: hot-tub-temp
     platform: ESP8266
     board: nodemcuv2
     comment: Hot Tub Temp

@@ -1,5 +1,5 @@
 esphome:
-  name: deck_lights
+  name: deck-lights
   platform: ESP8266
   board: esp01_1m
   comment: Deck Lights

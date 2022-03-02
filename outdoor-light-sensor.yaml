@@ -1,5 +1,5 @@
 esphome:
-  name: outdoor_light_sensor
+  name: outdoor-light-sensor
   platform: ESP8266
   board: nodemcuv2
   comment: Outdoor Light Sensor
